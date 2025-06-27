@@ -7,36 +7,30 @@ import { EXAMPLES } from './data.js';
 
 function App() {
 
-  const [selectedTopic, setSelectedTopic] = useState('components');
+  const [selectedTopic, setSelectedTopic] = useState();
 
   function handleClick(selectedButton){
     setSelectedTopic(selectedButton);
-    console.log(selectedTopic);
 }
   return (
-    <div>
+    <>
       <Header />
       <main>
         <section id = "core-concepts">
            <h2>Core Concepts</h2>
            <ul>
-            <CoreConcept {...props[0]} /> 
-            <CoreConcept {...props[1]} /> 
-            <CoreConcept {...props[2]} /> 
-            <CoreConcept {...props[3]}/>  
+            {props.map((object) => (<CoreConcept {...object} />))}
            </ul>
         </section>
         <section id = "examples">
           <h2>Examples</h2>
           <menu>
-            <TabButton onSelect = {() => handleClick('components')}>Components</TabButton>
-            <TabButton onSelect = {() => handleClick('jsx')}>JSX</TabButton>
-            <TabButton onSelect = {() => handleClick('props')}>Props</TabButton>
-            <TabButton onSelect = {() => handleClick('state')}>State</TabButton>
+            <TabButton isSelected = {selectedTopic === 'components'} onSelect = {() => handleClick('components')}>Components</TabButton>
+            <TabButton isSelected = {selectedTopic === 'jsx'} onSelect = {() => handleClick('jsx')}>JSX</TabButton>
+            <TabButton isSelected = {selectedTopic === 'props'} onSelect = {() => handleClick('props')}>Props</TabButton>
+            <TabButton isSelected = {selectedTopic === 'state'} onSelect = {() => handleClick('state')}>State</TabButton>
           </menu>
-          <div id = "tab-content">
- 
-
+          {selectedTopic ? <div id = "tab-content">
             <h3>{EXAMPLES[selectedTopic].title}</h3>
             <p>{EXAMPLES[selectedTopic].description}</p>
             <pre>
@@ -45,10 +39,12 @@ function App() {
               </code>
             </pre>
 
-          </div>
+          </div> : "Please select a topic to view its example."
+          }
+
         </section>
       </main>
-    </div>
+    </>
 
   );
 }
